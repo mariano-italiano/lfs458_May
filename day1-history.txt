@@ -1,0 +1,68 @@
+hostnamectl set-hostname k8s-master
+df -h
+sudo poweroff
+sudo -i
+mkdir -p $HOME/.kube
+ls -la .kube/
+ls -la .kube/config 
+kubectl get pods
+kubectl get nodes
+kubectl api-resources
+kubectl cluster-info
+kubectl get ns
+kubectl get pods --all-namespaces
+kubectl get pods -A
+kubectl describe ns kube-system
+cd /etc/kubernetes/manifests/
+ls -la
+vi static-pod.yaml
+sud vi static-pod.yaml
+sudo vi static-pod.yaml
+kubectl get pods 
+vi etcd.yaml 
+sudo i etcd.yaml 
+sudo vi etcd.yaml 
+kubectl events
+sudo crictl ps -a
+sudo crictl config --set runtime-endpoint=unix:///run/containerd/containerd.sock --set image-endpoint=unix:///run/containerd/containerd.sock
+sudo crictl config --set runtime-endpoint=unix:///run/containerd/containerd.sock --set image-endpoint=unix:///run/containerd/containerd.sock
+sudo crictl ps -a
+sudo crictl logs 7b575123f35e0
+cd
+etcdctl
+sudo apt  install etcd-client -y
+etcdctl
+cat /etc/kubernetes/manifests/etcd.yaml | grep cert
+sudo cat /etc/kubernetes/manifests/etcd.yaml | grep cert -i 
+ETCDCTL_API=3 etcdctl --endpoints 192.168.1.100:2379   --cert=/etc/kubernetes/pki/etcd/server.crt   --key=/etc/kubernetes/pki/etcd/server.key   --cacert=/etc/kubernetes/pki/etcd/ca.crt   member list -w table
+sudo ETCDCTL_API=3 etcdctl --endpoints 192.168.1.100:2379   --cert=/etc/kubernetes/pki/etcd/server.crt   --key=/etc/kubernetes/pki/etcd/server.key   --cacert=/etc/kubernetes/pki/etcd/ca.crt   member list -w table
+sudo ETCDCTL_API=3 etcdctl --endpoints 192.168.1.100:2379   --cert=/etc/kubernetes/pki/etcd/server.crt   --key=/etc/kubernetes/pki/etcd/server.key   --cacert=/etc/kubernetes/pki/etcd/ca.crt   member list 
+sudo ETCDCTL_API=3 etcdctl --endpoints 192.168.1.100:2379   --cert=/etc/kubernetes/pki/etcd/server.crt   --key=/etc/kubernetes/pki/etcd/server.key   --cacert=/etc/kubernetes/pki/etcd/ca.crt   endpoint health
+kubectl get pods
+sudo rm /etc/kubernetes/manifests/static-pod.yaml 
+kubectl get pods
+kubectl run web1 --image nginx
+kubectl get pods
+sudo ETCDCTL_API=3 etcdctl --endpoints 192.168.1.100:2379   --cert=/etc/kubernetes/pki/etcd/server.crt   --key=/etc/kubernetes/pki/etcd/server.key   --cacert=/etc/kubernetes/pki/etcd/ca.crt snapshot save /tmp/snapEtcd.db
+sudo vi /etc/kubernetes/manifests/etcd.yaml 
+cd /var/lib/etcd
+sudo cd /var/lib/etcd
+sudo -i
+kubectl get pods
+kubectl get nodes
+kubectl get pods
+kubectl get nodes
+watch -n1 sudo crictl ps 
+kubectl get nodes
+sudo -i
+kubectl get nodes
+sudo ETCDCTL_API=3 etcdctl --endpoints 192.168.1.100:2379   --cert=/etc/kubernetes/pki/etcd/server.crt   --key=/etc/kubernetes/pki/etcd/server.key   --cacert=/etc/kubernetes/pki/etcd/ca.crt --data-dir=/var/lib/etcd-restored snapshot restore /tmp/snapEtcd.db
+sudo rm -rf /var/lib/etcd-restored/
+sudo ETCDCTL_API=3 etcdctl --endpoints 192.168.1.100:2379   --cert=/etc/kubernetes/pki/etcd/server.crt   --key=/etc/kubernetes/pki/etcd/server.key   --cacert=/etc/kubernetes/pki/etcd/ca.crt --data-dir=/var/lib/etcd-restored snapshot restore /tmp/snapEtcd.db
+sudo vi /etc/kubernetes/manifests/
+watch -n1 sudo crictl ps 
+kubectl get nodes
+kubectl get pods
+history
+history | cut -c 8-
+history | cut -c 8- > day1-history.txt
