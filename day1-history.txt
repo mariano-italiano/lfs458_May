@@ -66,3 +66,175 @@ kubectl get pods
 history
 history | cut -c 8-
 history | cut -c 8- > day1-history.txt
+sudo echo "deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.28/deb/ /" | sudo tee /etc/apt/sources.list.d/kubernetes.list
+sudo curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.28/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+sudo echo "deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.29/deb/ /" | sudo tee /etc/apt/sources.list.d/kubernetes.list
+sudo curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.29/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+sudo apt-cache madison kubeadm | head
+sudo apt-get update
+sudo apt-cache madison kubeadm | head
+sudo -i
+sudo kubeadm upgrade plan
+sudo echo "deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.28/deb/ /" | sudo tee /etc/apt/sources.list.d/kubernetes.list
+sudo curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.28/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+sudo apt-get update
+sudo apt-cache madison kubeadm | head
+sudo apt-get install kubeadm=1.28.7-1.1
+sudo kubeadm upgrade plan
+sudo kubeadm upgrade apply v1.28.7
+kubectl get nodes
+kubectl drain k8s-master --ignore-daemonsets 
+sudo apt-get install -y kubelet=1.28.7-1.1 kubectl=1.28.7-1.1
+sudo apt-get install -y kubelet=1.28.7-1.1 kubectl=1.28.7-1.1 --allow-change-held-packages
+sudo systemctl daemon-reload
+sudo systemctl restart kubelet
+kubectl uncordon k8s-master 
+kubectl get nodes
+sudo echo "deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.29/deb/ /" | sudo tee /etc/apt/sources.list.d/kubernetes.list
+sudo curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.29/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+sudo apt-get update 
+sudo apt-cache madison kubeadm | head
+sudo apt-get install kubeadm=1.29.2-1.1
+sudo kubeadm upgrade plan
+sudo kubeadm upgrade apply v1.29.2
+kubectl drain k8s-master 
+kubectl drain k8s-master  --ignore-daemonsets 
+sudo apt-get install kubectl=1.29.2-1.1 kubelet=1.29.2-1.1
+sudo systemctl daemon-reload
+sudo systemctl restart kubelet
+kubectl uncordon k8s-master 
+kubectl get nodes
+ssh worker01
+ssh student@192.168.1.
+kubectl get nodes -o wide
+ssh 192.168.1.110
+kubectl get nodes -o wide
+ssh 192.168.1.110
+kubectl drain worker01 --ignore-daemonsets 
+ssh 192.168.1.110
+kubectl get nodes -o wide
+kubectl uncordon worker01
+kubectl drain worker02 --ignore-daemonsets 
+ssh 192.168.1.120
+kubectl get nodes -o wide
+kubectl get nodes
+kubectl uncordon worker02
+kubectl get pods -A
+k get nodes
+kubectl get nodes
+kubectl drain node k8s-master
+kubectl drain k8s-master --ignore-daemonset
+kubectl drain k8s-master --ignore-daemonsets
+kubectl get nodes
+echo "deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.30/deb/ /" | sudo tee /etc/apt/sources.list.d/kubernetes.list
+curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.30/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+sudo apt-cache madison kubeadm
+sudo apt-get update
+sudo apt-cache madison kubeadm
+sudo kubeadm upgrade plan
+sudo apt-get install -y --allow-change-held-packages kubeadm=1.30.1-1.1
+sudo kubeadm upgrade plan
+sudo kubeadm upgrade apply v1.30.1
+kubectl get node
+sudo apt-get install -y --allow-change-held-packages kubelet=1.30.1-1.1 kubectl=1.30.1-1.1
+kill -9 4321
+sudo kill -9 4321
+sudo apt-get install -y --allow-change-held-packages kubelet=1.30.1-1.1 kubectl=1.30.1-1.1
+sudo kill -9 15196;sudo apt-get install -y --allow-change-held-packages kubelet=1.30.1-1.1 kubectl=1.30.1-1.1
+sudo apt-get install -y --allow-change-held-packages kubelet=1.30.1-1.1 kubectl=1.30.1-1.1
+sudo apt-get update
+sudo apt-get install -y --allow-change-held-packages kubelet=1.30.1-1.1 kubectl=1.30.1-1.1
+sudo dpkg --configure -a
+sudo apt-get install -y --allow-change-held-packages kubelet=1.30.1-1.1 kubectl=1.30.1-1.1
+sudo systemctl daemon-reload 
+sudo systemctl restart kubelet
+kubectl get node
+kubectl uncordon k8s-master 
+kubectl get node
+kubectl drain worker01
+kubectl drain worker01 --ignore-daemonsets
+kubectl get nod
+kubectl get no
+kubectl get nod
+kubectl get no
+kubectl uncordon worker01
+kubectl get no
+kubectl drain worker02 --ignore-daemonsets
+kubectl get no
+kubectl uncordon worker02
+kubectl get no
+git clone https://github.com/mariano-italiano/lfs458_May.git
+sudo apt-get install git -y ; git clone https://github.com/mariano-italiano/lfs458_May.git
+cd lfs458_May/
+ls
+mkdir day1
+cd day1
+vi pod.yaml
+kubectl get no --show-labels 
+vi pod.yaml
+kubectl apply -f pod.yaml
+kubectl get pods
+kubectl delete -f pod.yaml 
+kubectl get pods
+kubectl create ns web
+kubectl apply -f pod.yaml -n web
+kubectl get pod
+kubectl get pod -n default
+kubectl get pod -n web
+kubectl get pod -A
+kubectl get pod -n web 
+kubectl get pod -n web -o wide
+kubectl get pod -n web -o yaml
+kubectl get pod nginx -n web -o yaml
+kubectl run web2 -n web --image httpd
+kubectl get pod -n web
+kubectl describe -n web pod web2
+kubectl run web2 -n web --image httpd --dry-run=client -o yaml
+kubectl run web2 -n web --image httpd --dry-run=client -o yaml > http.yaml
+vi http.yaml 
+kubectl run web2 -n web --image httpd -l kubernetes.io/app=web2 --dry-run=client -o yaml > http.yaml
+vi http.yaml 
+kubectl apply -f http.yaml
+kubectl describe -n web pod web2
+q
+kubectl replace --force http.yaml 
+kubectl replace --force -f http.yaml 
+kubectl describe -n web pod web2
+kubectl get pod --selector kubernetes.io/app
+kubectl get pod --selector kubernetes.io/app -A
+kubectl get pod --selector kubernetes.io/app=web -A
+kubectl delete pod --selector kubernetes.io/app=web -A
+kubectl get pods -A
+kubectl get pods -A --show-labels 
+kubectl get pods -A -l tier=control-plane
+kubectl get pods -A -l 'tier in(control-plane),component notin(etcd)'
+kubectl get pods -A -l 'tier in(control-plane),component in(etcd)'
+kubectl describe pod -n kube-system etcd-k8s-master 
+kubectl get pods
+kubectl get pods -n web
+kubectl edit pod -n web web2
+kubectl describe pod -n web web
+kubectl annotate pod web2 -n web createdBy=Marcin Trener K8s
+kubectl annotate pod web2 -n web createdBy="Marcin Trener K8s"
+kubectl describe pod -n web web
+kubectl annotate pod web2 -n web createdBy="Marcin Trener"
+kubectl annotate pod web2 -n web createdBy="Marcin Trener" --overwrite
+kubectl describe pod -n web web
+kubectl annotate pod web2 -n web createdBy-
+kubectl describe pod -n web web
+kubectl create sa my-svc-acc
+kubectl create role sa-role --help
+kubectl create role sa-role --verb=get,list,watch --resource=pods 
+kubectl create rolebinding sa-rolebinding --help
+kubectl create rolebinding sa-rolebinding --role=sa-role --serviceaccount=default:my-svc-acc
+kubectl auth can-i --help
+kubectl auth can-i get pods --as=system:serviceaccount:default:my-svc-acc
+kubectl auth can-i get deploy --as=system:serviceaccount:default:my-svc-acc
+kubectl auth can-i create ds --as=system:serviceaccount:default:my-svc-acc
+kubectl auth can-i list pod --as=system:serviceaccount:default:my-svc-acc
+git status
+cd ..
+git status
+history 
+history | awk '$1 > 56' | cut -c 8- 
+history | awk '$1 > 56' | cut -c 8- >> day1-history.txt 
