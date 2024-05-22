@@ -1,0 +1,281 @@
+kubectl apply -f sidecar-pod.yaml
+kubectl get pods
+kubectl exec -it sidecar-pod -- bash
+kubectl exec -it sidecar-pod -- sh
+kubectl exec -it sidecar-pod -c sidecar -- sh
+kubectl logs sidecar-pod 
+kubectl logs sidecar-pod -c busybox
+kubectl logs sidecar-pod -c busybox1
+kubectl logs sidecar-pod -c sidecar
+kubectl logs sidecar-pod --all-containers 
+vi init-pod.yaml
+kubectl apply -f init-pod.yaml
+watch -n1 kubectl get pods
+vi web.yaml
+kubectl apply -f web.yaml
+watch -n1 kubectl get pod
+vi web-svc.yaml
+kubectl apply -f web-svc.yaml;watch -n1 kubectl get pod
+kubectl logs web 
+kubectl logs web --all-containers 
+curl -v http://web-svc
+curl -v http://10.105.250.108 web-svc.default.svc.cluster.local
+kubectl exec -it web curl -v http://web-svc
+kubectl exec -it web curl  http://web-svc
+kubectl exec -it web -- sh
+kubectl get pods
+kubectl exec -it web -- curl -v http://web-svc:80
+kubectl get pod -o wide
+kubectl exec -it web -- curl -v http://10.0.1.250
+vi init-container-lab.yaml
+kubectl apply -f init-container-lab.yaml
+watch -n1 kubectl get pod
+watch -n1 kubectl get pod -o wide
+curl -v http://10.0.2.8
+kubectl get pod
+kubectl delete pod my-static-pod-worker01 
+kubectl get pod
+kubectl expose pod init-container-lab --port 80 --name init-container-svc
+kubectl edit pod init-container-lab 
+kubectl expose pod init-container-lab --port 80 --name init-container-svc
+kubectl get svc
+curl -v http://10.109.93.3
+kubectl get svc,ep,po
+kubectl get svc,ep,po -o wide
+kubectl expose pod init-container-lab --port 80 --type NodePort --name init-container-svc-np
+kubectl get ep,svc,pods -o wide
+kubectl expose pod init-container-lab --port 80 --type LoadBalancer --name init-container-svc-lb 
+kubectl get ep,svc,pods -o wide
+kubectl edit svc init-container-svc-lb 
+kubectl get ep,svc,pods -o wide
+kubectl delete service/init-container-svc-lb
+kubectl get ns
+kubectl get pod -n web
+kubectl -n web exec -it web2 -- sh
+vi dns-test.yaml
+kubectl apply -n web -f dns-test.yaml
+kubectl -n web exec -it test-dns -- sh
+vi replica-set.yaml
+kubectl apply -f replica-set.yaml
+kubectl get rs,po
+watch -n1 kubectl get rs,po
+kubectl delete pod frontend-58rvx
+watch -n1 kubectl get rs,po
+kubectl scale rs frontend --replicas=10
+watch -n1 kubectl get rs,po
+kubectl scale rs frontend --replicas=2
+watch -n1 kubectl get rs,po
+vi nginx-deployment.yaml
+kubectl apply -f nginx-deployment.yaml
+kubectl get deploy,rs,po 
+kubectl describe deploy nginx-deployment 
+kubectl edit deployments.apps nginx-deployment 
+kubectl describe deploy nginx-deployment 
+kubectl get deployments.apps -o yaml
+kubectl edit deployments.apps nginx-deployment 
+kubectl describe deploy nginx-deployment 
+kubectl get deployments.apps -o yaml
+kubectl set image deployment.v1.apps/nginx-deployment nginx=nginx:1.16.1 
+kubectl rollout status deployment nginx-deployment 
+kubectl get pods
+kubectl annotate deployment/nginx-deployment kubernetes.io/change-cause="update nginx image from 1.14.2 to 1.16.1, 21.05.2024 No12345"
+kubectl describe deployments.apps nginx-deployment 
+kubectl rollout history deployment nginx-deployment 
+kubectl set image deployment.v1.apps/nginx-deployment nginx=nginx:latest
+kubectl rollout status deployment nginx-deployment 
+kubectl get pods
+kubectl describe deployments.apps nginx-deployment 
+kubectl set image deployment.v1.apps/nginx-deployment nginx=nginx:1.16.1 --record 
+kubectl describe deployments.apps nginx-deployment 
+kubectl edit deployments.apps nginx-deployment 
+kubectl get pods
+kubectl rollout history deployment nginx-deployment 
+kubectl rollout undo deployment nginx-deployment --to-revision 3
+kubectl get pods
+kubectl describe deployments.apps nginx-deployment 
+kubectl rollout history deployment nginx-deployment 
+wget https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
+vi components.yaml 
+kubectl apply -f components.yaml
+kubectl -n kube-system get pods
+watch -n1 kubectl -n kube-system get pod
+kubectl get no
+kubectl top node
+kubectl top pods
+kubectl top pods --sort-by memory
+kubectl apply -f https://k8s.io/examples/application/php-apache.yaml
+kubectl autoscale deployment php-apache --cpu-percent=50 --min=1 --max=10
+kubectl describe hpa php-apache 
+kubectl run -i --tty load-generator --rm --image=busybox:1.28 --restart=Never -- /bin/sh -c "while sleep 0.01; do wget -q -O- http://php-apache; done"
+kubectl run -i --tty load-generator --rm --image=busybox:1.28 --restart=Never -- /bin/sh -c "while sleep 0.01; do wget -q -O- http://php-apache; done" --dry-run=client -o yaml > load-generator.yaml
+kubectl run -i --tty load-generator --rm --image=busybox:1.28 --restart=Never --dry-run=client -o yaml > load-generator.yaml -- /bin/sh -c "while sleep 0.01; do wget -q -O- http://php-apache; done" 
+vi load-generator.yaml 
+vi init-container-lab.yaml 
+kubectl run load-generator --image=busybox:1.28 --dry-run=client -o yaml > load-generator.yaml 
+vi load-generator.yaml
+kubectl apply -f load-generator.yaml
+kubectl get pods
+watch -n1 kubectl get hpa php-apache 
+vi load-generator.yaml
+kubectl delete pod load-generator 
+kubectl apply -f load-generator.yaml 
+vi load-generator.yaml
+kubectl apply -f load-generator.yaml 
+kubectl get pod
+watch -n1 kubectl get hpa php-apache 
+vi ~/.kube/config 
+grep client-cert ~/.kube/config
+grep client-cert ~/.kube/config | cut -d " " -f 6
+grep client-cert ~/.kube/config | cut -d " " -f 6 | base64 -d 
+export client=$(grep client-cert ~/.kube/config | cut -d " " -f 6 | base64 -d)
+export key=$(grep client-key ~/.kube/config | cut -d " " -f 6 | base64 -d)
+export auth=$(grep certificate-authority ~/.kube/config | cut -d " " -f 6 | base64 -d)
+echo $client > client.pem
+vi client.pem
+echo $key > client.key
+vi client.key
+echo $auth > ca.pem
+vi ca.pem
+kubectl get pods
+kubectl get pods -v 7
+kubectl get pods -v 10
+kubectl get pods -v 7
+curl --cert client.pem --key client.key --cacert ca.pem https://192.168.1.100:6443/api/v1/namespaces/default/pods
+export client=$(grep client-cert ~/.kube/config | cut -d " " -f 6)
+export key=$(grep client-key ~/.kube/config | cut -d " " -f 6)
+export auth=$(grep certificate-authority ~/.kube/config | cut -d " " -f 6)
+echo $client | base64 -d - > client.pem
+vi client.
+vi client.pem 
+vi ca.pem 
+echo $key | base64 -d - > client.key
+echo $auth | base64 -d - > ca.pem 
+curl --cert client.pem --key client.key --cacert ca.pem https://192.168.1.100:6443/api/v1/namespaces/default/pods
+curl --cert client.pem --key client.key --cacert ca.pem https://192.168.1.100:6443/api/v1/namespaces/default/pods | jq -r '.items[].metadata.name'
+sudo apt  install jq -y
+curl --cert client.pem --key client.key --cacert ca.pem https://192.168.1.100:6443/api/v1/namespaces/default/pods | jq -r '.items[].metadata.name'
+kubectl get pods
+curl --cert client.pem --key client.key --cacert ca.pem https://192.168.1.100:6443/api/v1/nodes | jq -r '.items[].metadata.name'
+curl --cert client.pem --key client.key --cacert ca.pem https://192.168.1.100:6443/api/v1/nodes | jq -r '.items[] | "Node name: \(.metadata.name), Taints: \(.spec.taints)"'
+curl -s --cert client.pem --key client.key --cacert ca.pem https://192.168.1.100:6443/api/v1/nodes | jq -r '.items[] | "Node name: \(.metadata.name), Taints: \(.spec.taints)"'
+openssl genrsa -out devops.key
+openssl req -new -key devops.key -out devops.csr -subj "/CN=devops"
+cat devops.csr 
+cat devops.csr | base64 | tr -d '\n'
+vi user-request-devops.yaml
+kubectl apply -f user-request-devops.yaml
+kubectl get csr
+kubectl certificate approve user-request-devops
+kubectl get csr
+kubectl get csr user-request-devops -o yaml
+kubectl get csr user-request-devops -o jsonpath='{.status.certificate}'
+kubectl get csr user-request-devops -o jsonpath='{.status.certificate}' | base64  -d > devops-user.crt
+vi devops-user.crt
+kubectl --kubeconfig config-devops config set-cluster prod --insecure-skip-tls-verify=true --server https://192.168.1.100:6443
+vi config-devops 
+kubectl --kubeconfig config-devops config set-credentials devops --client-certificate devops-user.crt --clien-key devops.key --embed-certs=true
+kubectl --kubeconfig config-devops config set-credentials devops --client-certificate devops-user.crt --client-key devops.key --embed-certs=true
+vi config-devops 
+kubectl --kubeconfig config-devops config set-context devops-context --cluster prod --user devops
+vi config-devops 
+kubectl --kubeconfig config-devops config use-context devops-context
+vi config-devops 
+kubectl create ns dev
+kubectl create -n dev role devops-role --verb=get,list,watch --resources=configmap,secret
+kubectl create -n dev role devops-role --verb=get,list,watch --resource=configmap,secret
+kubectl describe role devops-role -n dev
+sudo useradd -m devops -s /bin/bash 
+sudo passwd devops
+sudo cat /etc/passwd|grepdevops
+sudo cat /etc/passwd|grep devops
+kubectl -n dev create rolebinding devops-rolebinding --help
+kubectl -n dev create rolebinding devops-rolebinding --role devops-role --user devops
+vi config-devops 
+sudo -i
+sudo cat config-devops > /home/devops/.kube/config
+cp -rp config-devops /tmp/
+sudo -i
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.0.0/deploy/static/provider/baremetal/deploy.yaml
+kubectl get all -n ingress-nginx
+watch -n1 kubectl get all -n ingress-nginx
+kubectl edit svc ingress-nginx-controller -n ingress-nginx
+kubectl patch svc ingress-nginx-controller -n ingress-nginx --type='json' -p='[{"op": "replace", "path": "/spec/type", "value": "LoadBalancer"}]'
+kubectl edit svc ingress-nginx-controller -n ingress-nginx
+watch -n1 kubectl get all -n ingress-nginx
+vi pod.yaml
+kubectl run cars --image nginx 
+kubectl run dogs --image nginx 
+kubectl get pod
+kubectl expose cars --port 80 --name cars-svc
+kubectl expose pod cars --port 80 --name cars-svc
+kubectl expose pod dogs --port 80 --name dogs-svc
+kubectl get svc,ep
+vi cars_index.html
+vi dogs_index.html
+kubectl cp cars_index.html cars:/usr/share/nginx/html/index.html
+kubectl cp dogs_index.html dogs:/usr/share/nginx/html/index.html
+vi web-ingress.yaml
+kubectl get ingressclasses.networking.k8s.io 
+vi web-ingress.yaml
+kubectl apply -f web-ingress.yaml
+kubectl describe ingress web-ingressweb
+kubectl describe ingress web-ingress
+kubectl edit ingress web-ingress 
+vi web-
+vi web-ingress.yaml 
+kubectl replace --force -f web-ingress.yaml
+kubectl describe ingress web-ingress
+openssl req -newkey rsa:2048 -nodes -keyout website.key -out website.csr
+openssl x509 -signkey website.key -in website.csr -req -days 365 -out website.crt
+ls -la
+vi website.crt
+kubectl get secrets
+kubectl get secrets -A
+kubectl create secret tls myweb-ssl-cert --key website.key --cert website.crt 
+vi web-ingress.yaml 
+kubectl replace --force -f web-ingress.yaml
+kubectl describe ingress web-ingress 
+kubectl delete ingress web-ingress 
+kubectl apply -f web-ingress.yaml 
+vi web-ingress.yaml 
+kubectl apply -f web-ingress.yaml
+kubectl replace --force -f web-ingress.yaml
+vi web-ingress.yaml 
+kubectl replace --force -f web-ingress.yaml
+kubectl delete ingress web-ingress; kubectl delete -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.0.0/deploy/static/provider/baremetal/deploy.yaml
+kubectl get all -n ingress-nginx
+kubectl delete ns ingress-nginx
+kubectl delete -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.0.0/deploy/static/provider/baremetal/deploy.yaml
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.0.0/deploy/static/provider/baremetal/deploy.yaml
+kubectl describe secrets myweb-ssl-cert 
+kubectl get svc
+vi web-ingress.yaml 
+kubectl apply -f web-ingress.yaml
+kubectl get all -n ingress-nginx
+kubectl patch svc ingress-nginx-controller -n ingress-nginx --type='json' -p='[{"op": "replace", "path": "/spec/type", "value": "LoadBalancer"}]'
+kubectl edit svc ingress-nginx-controller -n ingress-nginx 
+kubectl get all -n ingress-nginx
+vi web-ingress.yaml 
+kubectl apply -f web-ingress.yaml
+kubectl describe ingress web-ingress 
+vi web-ingress.yaml 
+kubectl apply -f web-ingress.yaml
+htpasswd -c auth admin
+sudo apt install apache2-utils -y
+htpasswd -c auth admin
+vi auth 
+kubectl create secret generic basic-auth --from-file auth 
+vi web-ingress.yaml 
+kubectl apply -f init-
+kubectl apply -f web-ingress.yaml 
+vi web-ingress.yaml 
+kubectl apply -f web-ingress.yaml 
+vi daemon-set.yaml
+sudo poweroff
+cd lfs458_May/
+ls
+git status
+git add .
+ls day2/
+history
+history | awk '$1 > 246' | cut -c 8- >> day2-history.txt
