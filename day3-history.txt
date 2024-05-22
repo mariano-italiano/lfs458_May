@@ -179,3 +179,157 @@ kubectl get all -n app1 -o wide
 kubectl delete ns app1
 history
 history | awk '$1 > 538' | cut -c 8- >> ../day3-history.txt
+git status
+cd ..
+git status
+git add .
+git  commit -m "Ading day3 files"
+git push
+cd day3
+ls -la
+kubectl run node-selector-pod --image nginx --dry-run=client -o yaml > node-selector-pod.yaml
+vi node-selector-pod.yaml
+kubectl apply -f node-selector-pod.yaml
+kubectl get pod -o wide
+kubectl get pod -o wide | grep worker1 | wc -l
+kubectl get pod -o wide | grep worker01 | wc -l
+kubectl get pod -o wide | grep worker02 | wc -l
+kubectl delete -f node-selector-pod.yaml
+kubectl get pod -o wide | grep worker01 | wc -l
+kubectl get pod -o wide | grep worker02 | wc -l
+vi node-selector-pod.yaml 
+kubectl apply -f node-selector-pod.yaml
+kubectl get pod -o wide
+kubectl get nodes --show-labels 
+kubectl label nodes worker02 kubernetes.io/services=web
+kubectl get nodes --show-labels 
+mv node-selector-pod.yaml node-name-pod.yaml
+cp node-name-pod.yaml node-selector-pod.yaml
+kubectl delete -f node-name-pod.yaml 
+kubectl apply -f node-name-pod.yaml
+kubectl get pod -o wide
+vi node-name-pod.yaml 
+kubectl replace --force -f node-name-pod.yaml
+kubectl get pod -o wide
+vi node-selector-pod.yaml 
+kubectl apply -f node-selector-pod.yaml
+vi node-selector-pod.yaml 
+kubectl delete pod node-selector-pod 
+kubectl get pods
+kubectl apply -f node-selector-pod.yaml
+kubectl get pods -o wide
+kubectl get pod -o wide | grep worker01 | wc -l
+kubectl get pod -o wide | grep worker02 | wc -l
+kubectl delete pod node-selector-pod 
+kubectl label nodes worker02 kubernetes.io/services-
+kubectl apply -f node-selector-pod.yaml
+kubectl get pods -o wide
+kubectl events
+kubectl label nodes worker02 kubernetes.io/services=web
+kubectl events
+kubectl get pods -o wide
+kubectl get nodes -o json | jq -r '.items[] | "Node name: \(.metadata.name), Taints: \(.spec.taints[0])"'
+kubectl taint node worker01 kubernetes.io/env=prod
+kubectl taint node worker01 kubernetes.io/env=prod:NoSchedule
+kubectl get nodes -o json | jq -r '.items[] | "Node name: \(.metadata.name), Taints: \(.spec.taints[0])"'
+cp node-name-pod.yaml noschedule-pod.yaml
+vi noschedule-pod.yaml
+kubectl apply -f noschedule-pod.yaml
+kubectl get pod noschedule-pod -o wide
+vi noschedule-pod.yaml
+kubectl delete pod noschedule-pod 
+kubectl apply -f noschedule-pod.yaml
+kubectl get pod noschedule-pod -o wide
+kubectl taint node worker02 kubernetes.io/db=true:NoExecute
+kubectl get pods
+kubectl get pods -o wide
+kubectl events
+kubectl taint node worker02 kubernetes.io/db-
+kubectl get pods -o wide
+kubectl edit deployments.apps php-apache 
+kubectl get pods -o wide
+kubectl edit deployments.apps nginx-deployment 
+kubectl get pods -o wide
+kubectl taint node worker02 kubernetes.io/db=true:NoExecute
+kubectl get pods -o wide
+watch -n 1 kubectl get pods -o wide
+kubectl get nodes -o json | jq -r '.items[] | "Node name: \(.metadata.name), Taints: \(.spec.taints[0])"'
+kubectl edit deployments.apps nginx-deployment 
+watch -n 1 kubectl get pods -o wide
+kubectl taint node worker01 kubernetes.io/env-
+kubectl taint node worker02 kubernetes.io/db-
+kubectl get nodes -o json | jq -r '.items[] | "Node name: \(.metadata.name), Taints: \(.spec.taints[0])"'
+vi with-node-affinity.yamla
+vi with-node-affinity.yaml
+kubectl get node --show-labels 
+kubectl label node worker01 country=poland
+kubectl label node worker02 country=france
+kubectl get pod -o wide
+kubectl get pod -o wide | grep -i worker01 | wc -l
+kubectl get pod -o wide | grep -i worker02 | wc -l
+kubectl label node worker01 env=production
+kubectl get node --show-labels 
+kubectl apply -f with-node-affinity.yaml 
+kubectl get pod -o wide
+vi with-node-affinity.yaml 
+kubectl replace --force -f with-node-affinity.yaml
+kubectl get pod -o wide
+cp -rp with-node-affinity.yaml with-pod-affinity.yaml
+vi with-pod-affinity.yaml
+kubectl apply -f with-pod-affinity.yaml
+kubectl get pod -o wide
+vi with-pod-affinity.yaml 
+kubectl replace --force -f with-pod-affinity.yaml
+kubectl get pod -o wide
+vi with-pod-affinity.yaml 
+kubectl delete pod with-node-affinity 
+kubectl delete pod with-pod-affinity 
+kubectl apply -f with-pod-affinity.yaml
+kubectl get pod -o wide
+kubectl apply -f with-node-affinity.yaml ; watch -n1 kubectl get po -o wide
+vi with-node-affinity.yaml 
+kubectl delete pod with-node-affinity 
+kubectl get pod -o wide
+kubectl apply -f with-node-affinity.yaml 
+kubectl get pod -o wide
+kubectl delete pod with-node-affinity 
+vi with-node-affinity.yaml 
+kubectl apply -f with-node-affinity.yaml 
+kubectl get pod -o wide
+kubectl delete pod with-node-affinity with-pod-affinity 
+kubectl apply -f with-node-affinity.yaml 
+kubectl get pod -o wide
+kubectl delete pod with-node-affinity with-pod-affinity 
+vi with-node-affinity.yaml 
+kubectl apply -f with-node-affinity.yaml 
+kubectl get pod -o wide
+kubectl apply -f with-pod-affinity.yaml 
+kubectl get pod -o wide
+kubectl create ns np-test
+kubectl describe ns np-test
+vi np-nginx.yaml
+kubectl apply -f np-nginx.yaml
+kubectl get po -n np-test 
+vi np-busybox.yaml
+kubectl apply -f np-busybox.yaml 
+kubectl get po -n np-test
+kubectl get po -n np-test -o wide
+kubectl exec -n np-test np-busybox -- curl http://10.0.2.135
+vi np-networkpolicy.yaml
+kubectl api-resources  | grep policy
+kubectl api-resources  | grep policy -i
+vi np-networkpolicy.yaml
+kubectl apply -f np-networkpolicy.yaml
+kubectl exec -n np-test np-busybox -- curl http://10.0.2.135
+vi np-networkpolicy.yaml
+kubectl exec -n np-test np-busybox -- curl http://10.0.2.135
+vi np-networkpolicy.yaml
+kubectl apply -f np-networkpolicy.yaml
+kubectl exec -n np-test np-busybox -- curl http://10.0.2.135
+kubectl get pods
+kubectl get pods web -o wide
+curl http://10.0.1.101
+kubectl exec -n np-test np-busybox -- curl http://10.0.1.101
+git status
+history
+history | awk '$1 > 538' | cut -c 8- > ../day3-history.txt

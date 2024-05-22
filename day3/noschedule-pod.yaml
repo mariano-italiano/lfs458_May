@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    topic: taints
+  name: noschedule-pod
+spec:
+  tolerations:
+  - key: "kubernetes.io/env"
+    operator: "Equal"
+    value: "prod"
+    effect: "NoSchedule"
+  containers:
+  - image: nginx
+    name: noschedule-pod
+    resources: {}

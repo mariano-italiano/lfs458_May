@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    run: node-selector-pod
+  name: node-selector-pod
+spec:
+  nodeSelector:
+    kubernetes.io/services: web
+  containers:
+  - image: nginx
+    name: node-selector-pod
+    resources: {}
