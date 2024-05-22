@@ -1,0 +1,181 @@
+kubectl apply -f volume-pod.yaml
+kubectl  get pods
+kubectl  get pods -o wide
+kubectl exec -it volume-pod -- bash
+kubectl delete pod volume-pod 
+kubectl apply -f volume-pod.yaml
+kubectl exec -it volume-pod -- bash
+kubectl get pod
+kubectl exec -it volume-pod -- bash
+kubectl  get pods -o wide
+kubectl exec -it volume-pod -- bash
+vi volume-pod.yaml 
+cp ../day2/nginx-deployment.yaml volume-deployment.yaml
+vi volume-deployment.yaml
+kubectl apply -f volume-deployment.yaml
+kubectl get pod -o wide
+kubectl exec -it volume-deployment-9cb887d89-89fc7 -- ls -la /output
+kubectl exec -it volume-deployment-9cb887d89-xbk78 -- ls -la /output
+vi ../day2/sidecar-pod.yaml 
+vi test-pv.yaml
+kubectl apply -f test-pv.yaml
+kubectl get pv
+vi test-pvc.yaml
+kubectl apply -f test-pvc.yaml
+kubectl get pv,pvc
+vi pvc-volume-pod.yaml
+vi test-pv.yaml 
+kubectl apply -f pvc-volume-pod.yaml 
+kubectl get pod
+kubectl expose pod pvc-volume-pod --port 80 --name pvc-volume-svc --type NodePort
+vi pvc-volume-pod.yaml 
+kubectl edit pod pvc-volume-pod 
+kubectl expose pod pvc-volume-pod --port 80 --name pvc-volume-svc --type NodePort
+kubectl get svc 
+kubectl delete pod pvc-volume-pod 
+kubectl apply -f pvc-volume-pod.yaml 
+kubectl delete pod pvc-volume-pod 
+kubectl get pv,pvc
+kubectl delete pvc test-pvc
+kubectl get pv,pvc
+kubectl apply -f test-pvc.yaml 
+kubectl get pv,pvc
+kubectl get pv test-pv -o json
+kubectl patch pv test-pv -p '{"spec":{"claimRef":null}}'
+kubectl get pv test-pv -o json
+kubectl get pv,pvc
+sudo apt install nfs-common nfs-kernel-server cifs-utils -y
+sudo mkdir /var/nfs-share
+vi /etc/exports 
+sudo vi /etc/exports 
+sudo exportfs -rav
+sudo showmount -e localhost
+vi nfs-class.yaml
+kubectl apply -f nfs-class.yaml
+kubectl get sc
+vi nfs-pv.yaml
+kubectl apply -f nfs-pv.yaml
+kubectl get pv
+vi nfs-pvc.yaml
+kubectl apply -f nfs-pvc.yaml
+kubectl get pv,pvc
+vi volume-
+vi volume-pod.yaml 
+ls -la
+cp -rp pvc-volume-pod.yaml nfs-volume-pod.yaml
+vi nfs-volume-pod.yaml
+kubectl apply -f nfs-volume-pod.yaml
+kubectl get pod nfs-volume-pod 
+kubectl events
+kubectl delete -f nfs-volume-pod.yaml 
+kubectl apply -f nfs-volume-pod.yaml
+kubectl get pod nfs-volume-pod 
+kubectl events
+kubectl recplace --force -f nfs-volume-pod.yaml
+kubectl replace --force -f nfs-volume-pod.yaml
+kubectl get pod nfs-volume-pod 
+kubectl events
+kubectl get pv,pvc,sc
+kubectl exec -it nfs-volume-pod -- sh
+sudo chmod 777 /var/nfs-share/
+kubectl exec -it nfs-volume-pod -- sh
+vi nfs-pvc.yaml 
+df -h
+kubectl exec -it nfs-volume-pod -- sh
+df -h
+vi pvc-volume-pod.yaml 
+vi my-configmap.yaml
+kubectl apply -f my-configmap.yaml
+kubectl get cm
+kubectl describe cm my-configmap
+vi env-file-example
+kubectl create configmap fromenv --from-env-file env-file-example 
+kubectl describe cm fromenv 
+vi service.json
+sudo cat /etc/ssh/sshd_config|grep -v "#" | tr -s '\n'
+sudo cat /etc/ssh/sshd_config|grep -v "#" | tr -s '\n' > sshd_config
+kubectl create cm configuration --from-file service.json --from-file sshd_config 
+kubectl create cm configuration2 --from-file service.json --from-env-file env-file-example 
+kubectl describe cm configuration 
+kubectl create cm test-cm --from-literal user=root --from-literal pass=Secur3Pass123
+kubectl create cm test-cm2 --from-literal user=root --from-literal pass=Secur3Pass123 --from-file service.json 
+kubectl describe cm test-cm
+kubectl describe cm test-cm2
+kubectl get cm
+vi configmap-pod.yaml
+kubectl apply -f configmap-pod.yaml
+vi configmap-pod.yaml
+kubectl apply -f configmap-pod.yaml
+kubectl get pod configmap-pod 
+kubectl exec -it configmap-pod -- env
+vi configmap-volume-pod.yaml
+kubectl aply -f configmap-volume-pod.yaml
+kubectl apply -f configmap-volume-pod.yaml
+vi configmap-volume-pod.yaml
+kubectl apply -f configmap-volume-pod.yaml
+kubectl get pod configmap-volume-pod 
+kubectl exec -it configmap-volume-pod -- bash
+kubectl exec -it configmap-volume-pod -- sh
+kubectl edit cm my-configmap 
+kubectl exec -it configmap-volume-pod -- sh
+kubectl create secret docker-registry myPrivRepo --docker-server hub.docker.com --docker-username myuser1
+kubectl create secret docker-registry myPrivRepo --docker-server hub.docker.com --docker-username myuser1 --docker-password SecurePass
+kubectl create secret docker-registry my-priv-repo --docker-server hub.docker.com --docker-username myuser1 --docker-password SecurePass
+kubectl get secrets 
+kubectl describe secret my-priv-repo
+kubectl describe secret my-priv-repo -o yaml
+kubectl get secret my-priv-repo -o yaml
+echo "eyJhdXRocyI6eyJodWIuZG9ja2VyLmNvbSI6eyJ1c2VybmFtZSI6Im15dXNlcjEiLCJwYXNzd29yZCI6IlNlY3VyZVBhc3MiLCJhdXRoIjoiYlhsMWMyVnlNVHBUWldOMWNtVlFZWE56In19fQ==" | base64 -d
+echo -n "secretValue" | base64
+vi my-secret.yaml
+echo -n "secureSqlPass" | base64
+vi my-secret.yaml
+kubectl apply -f my-secret.yaml
+kubectl get cm my-configmap 
+kubectl describe cm my-configmap 
+kubectl describe secret my-secret 
+kubectl get secret
+kubectl create secret generic mariadb-pass --from-literal pass=Szkolenielfs458
+vi secret-pod.yaml
+vi my-configmap.yaml 
+vi my-secret.yaml 
+vi secret-pod.yaml
+kubectl apply -f secret-pod.yaml
+kubectl get pos
+kubectl get pod
+kubectl logs secret-pod 
+kubectl logs secret-pod  | grep DB
+kubectl logs secret-pod  | grep _PASS
+vi secret-pod.yaml
+kubectl replace --force -f secret-pod.yaml
+kubectl exec -it secret-pod -- ls -la /secrets
+kubectl exec -it secret-pod -- cat /secrets/SQL_PASS
+htpasswd -c .htpasswd mariola
+cat .htpasswd 
+kubectl create secret generic nginx-htpasswd --from-file .htpasswd 
+rm .htpasswd 
+vi nginx-config.yaml
+kubectl apply -f nginx-config.yaml
+vi nginx-pod.yaml
+kubectl apply -f nginx-pod.yaml
+kubectl get pod -o wide
+kubectl get secret nginx-htpasswd -o yaml
+kubectl get secret nginx-htpasswd -o yaml > simple-app.yaml
+vi simple-app.yaml
+kubectl create ns app1 --dry-run=client -o yaml
+vi simple-app.yaml
+kubectl get cm nginx-config -o yaml >> simple-app.yaml 
+vi simple-app.yaml
+kubectl apply -f simple-app.yaml
+kubectl get all -n app1
+vi simple-app.yaml 
+kubectl get all -n app1
+kubectl get ns
+kubectl delete ns app1
+kubectl apply -f simple-app.yaml 
+kubectl get all -n app1
+kubectl get secrets -n app1
+kubectl get all -n app1 -o wide
+kubectl delete ns app1
+history
+history | awk '$1 > 538' | cut -c 8- >> ../day3-history.txt

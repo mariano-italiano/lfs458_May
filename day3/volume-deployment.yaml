@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: volume-deployment
+  labels:
+    app: volume
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: volume
+  template:
+    metadata:
+      labels:
+        app: volume
+    spec:
+      containers:
+        - name: volume-pod
+          image: marcinkujawski/python-api:1.0
+          volumeMounts:
+            - name: my-volume
+              mountPath: /output
+      volumes:
+        - name: my-volume
+          hostPath:
+            path: /data    
+
