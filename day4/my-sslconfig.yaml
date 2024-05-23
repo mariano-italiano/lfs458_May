@@ -1,0 +1,8 @@
+apiVersion: lab.local/v1
+kind: SslConfig
+metadata:
+  name: servera-sslconfig
+spec:
+  key : "my private key"
+  cert: "my certificate"
+  serverName: "servera"

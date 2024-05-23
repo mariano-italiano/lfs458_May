@@ -1,0 +1,6 @@
+apiVersion: v2
+name: simple-app
+description: My simple-app Helm chart for Kubernetes created on LFS458 in May
+type: application
+version: 0.1.0
+appVersion: "1.16.0"

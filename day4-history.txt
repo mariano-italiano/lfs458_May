@@ -156,3 +156,213 @@ kubectl rollout restart -n default deployment dashboard-deployment
 kubectl get sa -n kubernetes-dashboard 
 history
 history | awk '$1 > 886' | cut -c 8- > ../day4-history.txt
+cd ..
+git status
+git add .
+git commit -m "Adding day4 content"
+git push
+git pull
+git config pull.rebase false
+git pull
+git push
+git sttaus
+git status
+cd day4
+curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+chmod 700 get_helm.sh
+./get_helm.sh
+helm -v
+helm version
+helm search --help
+helm repo add bitnami https://charts.bitnami.com/bitnami
+helm search repo bitnami/nginx
+helm search repo bitnami/postgres
+helm search repo bitnami/wordpress
+helm install bitnami/nginx --generate-name
+export SERVICE_PORT=$(kubectl get --namespace default -o jsonpath="{.spec.ports[0].port}" services nginx-1716465930)
+export SERVICE_IP=$(kubectl get svc --namespace default nginx-1716465930 -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+echo "http://${SERVICE_IP}:${SERVICE_PORT}"
+kubectl get svc --namespace default nginx-1716465930
+kubectl edit svc nginx-1716465930
+kubectl get svc --namespace default nginx-1716465930
+helm install happy-panda bitnami/wordpress
+helm list
+helm uninstall nginx-1716465930
+helm list
+helm uninstall happy-panda
+helm install happy-panda bitnami/wordpress -n wordpress
+helm install happy-panda bitnami/wordpress -n wordpress --create-namespace
+kubectl get secret --namespace wordpress happy-panda-wordpress -o jsonpath="{.data.wordpress-password}" | base64 -d
+kubectl get all -n wordpress
+helm list
+helm list -n wordpres
+helm list -n wordpress
+kubectl get all -n wordpress
+kubectl -n wordpress events
+kubectl get pod happy-panda-wordpress-cb965967-bw6m4 -o wide -n wordpress
+kubectl get pod happy-panda-wordpress-cb965967-bw6m4 -o yaml -n wordpress
+cp -rp ../day3/test-pv* .
+mv test-pv.yaml wordpress-pv.yaml
+mv test-pvc.yaml wordpress-pvc.yaml
+vi wordpress-pv.yaml 
+vi wordpress-pvc.yaml
+kubectl apply -f wordpress-pv.yaml -f wordpress-pvc.yaml -n wordpress 
+kubectl get pv,pvc -n wordpress
+kubectl delete -f wordpress-pvc.yaml
+kubectl delete -f wordpress-pvc.yaml -n wordpress 
+kubectl delete -f wordpress-pv.yaml -n wordpress 
+kubectl get pv,pvc -n wordpress
+kubectl edit pvc -n wordpress happy-panda-wordpress
+vi wordpress-pv.yaml 
+kubectl apply -f wordpress-pv.yaml -n wordpress 
+vi wordpress-pv.yaml 
+kubectl edit pvc -n wordpress happy-panda-wordpress
+vi wordpress-pv.yaml 
+vi ../day3/test-pv.yaml 
+vi wordpress-pv.yaml 
+kubectl apply -f wordpress-pv.yaml -n wordpress 
+kubectl get pv,pvc -n wordpress
+kubectl edit pvc -n wordpress happy-panda-wordpress
+kubectl get pv,pvc -n wordpress
+kubectl get all -n wordpress
+watch -n1 kubectl get all -n wordpress
+kubectl events
+kubectl get pv,pvc -n wordpress
+kubectl edit pvc -n wordpress data-happy-panda-mariadb-0
+kubectl get pv,pvc -n wordpress
+cp -rp wordpress-pv.yaml wordpress-mariadb-pv.yaml
+vi wordpress-mariadb-pv.yaml
+kubectl apply -f wordpress-mariadb-pv.yaml
+kubectl get pv,pvc -n wordpress
+vi wordpress-mariadb-pv.yaml
+kubectl get pv,pvc -n wordpress
+kubectl get all -n wordpress
+kubectl events
+kubectl edit pvc -n wordpress data-happy-panda-mariadb-0
+kubectl delete -n wordpress pv wordpress-mariadb-pv 
+kubectl get pv,pvc -n wordpress
+kubectl edit pv wordpress-mariadb-pv 
+kubectl get pv,pvc -n wordpress
+vi wordpress-mariadb-pv.yaml 
+kubectl edit pvc -n wordpress data-happy-panda-mariadb-0
+vi wordpress-mariadb-pv.yaml 
+kubectl get pvc -A
+helm list
+helm list -a
+kubectl delete pvc data-happy-panda-mariadb-0 
+kubectl get pvc -A
+kubectl apply -f wordpress-mariadb-pv.yaml 
+kubectl get pv,pvc -n wordpress
+kubectl get all -nn wordpress
+kubectl get all -n wordpress
+kubectl events
+helm uninstall happy-panda -n wordpress-
+helm uninstall happy-panda -n wordpress
+kubectl get pv
+kubectl get pv,pvc -A
+kubectl delete pvc data-happy-panda-mariadb-0 -n wordpress 
+kubectl get pv,pvc -A
+kubectl patch pv wordpress-mariadb-pv -p '{"spec":{"claimRef":null}}'
+kubectl patch pv wordpress-pv -p '{"spec":{"claimRef":null}}'
+kubectl get pv,pvc -A
+helm install happy-panda bitnami/wordpress -n wordpress --create-namespace
+kubectl get all -n wordpress 
+watch -n1 kubectl get all -n wordpress 
+kubectl events
+kubectl edit pvc -n wordpress data-happy-panda-mariadb-0
+kubectl edit pvc -n wordpress happy-panda-wordpress 
+watch -n1 kubectl get all -n wordpress 
+kubectl events
+helm get values happy-panda -n wordpress
+helm show values bitnami/wordpress
+helm show values bitnami/wordpress > my-wp-values.yaml
+vi my-wp-values.yaml
+helm uninstall happy-panda -n wordpress
+helm install happy-panda bitnami/wordpress -n wordpress --create-namespace --values my-wp-values.yaml 
+helm uninstall happy-panda -n wordpress
+kubectl get svc -A
+kubectl get svc -A | grep 30080
+vi my-wp-values.yaml 
+helm install happy-panda bitnami/wordpress -n wordpress --create-namespace --values my-wp-values.yaml 
+kubectl get all -n wordpress
+helm uninstall happy-panda -n wordpress
+helm list -a
+ls -la ../day3
+ls -la ../day2
+cat ../day3/simple-app.yaml 
+helm create simple-app
+ls -la
+cd simple-app/
+ls -la
+tree
+sudo apt-get install tree -y
+tree
+rmdir charts/
+rm -rf templates/tests/
+vi values.yaml 
+rm templates/serviceaccount.yaml
+vi Chart.yaml 
+cd templates/
+ls -la
+vi deployment.yaml
+vi secret.yaml
+vi configmap.yaml
+kubectl get deploy
+kubectl get svc
+kubectl get svc -o yaml web-svc 
+vi service.yaml
+vi deployment.yaml 
+vi service.yaml
+ls -la
+vi hpa.yaml 
+vi ingress.yaml 
+vi ../values.yaml 
+vi ingress.yaml 
+cd ..
+helm lint simple-app/
+vi simple-app/templates/deployment.yaml 
+vi simple-app/values.yaml 
+helm lint simple-app/
+helm package simple-app --version 0.1
+helm install simple-app-0.1.tgz --create-namespace -n simple 
+helm install my-helm-app  simple-app-0.1.tgz --create-namespace -n simple 
+helm uninstall my-helm-app
+helm uninstall my-helm-app -n simple
+vi simple-app/templates/hpa.yaml 
+helm package simple-app --version 0.1
+rm /home/student/lfs458_May/day4/simple-app-0.1.tgz
+helm package simple-app --version 0.1
+helm install my-helm-app  simple-app-0.1.tgz --create-namespace -n simple 
+kubectl get all -n simple
+kubectl -n simple get ingress
+kubectl get secret -n simple
+kubectl get secret -n simple nginx-htpasswd -o yaml
+echo "bWFyaW9sYTokYXByMSRkUWN1aXpzaiQzUXphU3ZVcnhTRS85UmQzYWxyZzQvCg=="|base64 -d
+kubectl -n simple get ingress simple-app-ingress -o json
+kubectl -n simple get ingress simple-app-ingress -o jsonpath "{.spec.rules[0].host}"
+kubectl -n simple get ingress simple-app-ingress -o jsonpath="{.spec.rules[0].host}"
+vi simple-app/templates/NOTES.txt 
+vi simple-app/values.yaml 
+vi simple-app/templates/NOTES.txt 
+kubectl -n simple get ingress simple-app-ingress -o jsonpath="{.spec.rules[0].host}" && echo 
+vi simple-app/templates/NOTES.txt 
+helm package simple-app --version 0.1
+helm uninstal -n simple my-helm-app
+helm uninstall -n simple my-helm-app
+helm install my-helm-app  simple-app-0.1.tgz --create-namespace -n simple 
+kubectl -n simple get ingress simple-app-ingress -o jsonpath="{.spec.rules[0].host}" && echo
+vi crd-sslconfigs.yaml
+kubectl api-versions | grep exten
+vi crd-sslconfigs.yaml
+kubectl apply -f crd-sslconfigs.yaml
+vi my-sslconfig.yaml
+kubectl apply -f my-sslconfig.yaml
+kubectl get sslc
+kubectl describe sslc servera-sslconfig 
+kubectl get sslc servera-sslconfig -o jsonpath
+kubectl get sslc servera-sslconfig -o json
+kubectl get sslc servera-sslconfig -o jsonpath='{spec.key}'
+kubectl get sslc servera-sslconfig -o jsonpath='{.spec.key}'
+git status
+history
+history | awk '$1 > 886' | cut -c 8- > ../day4-history.txt
