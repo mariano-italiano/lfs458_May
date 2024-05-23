@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    app: python
+  name: lfs458-test
+spec:
+  containers:
+  - image: marcinkujawski/lfs458-demo:1.0
+    name: python-test
+    resources: {}
+    imagePullPolicy: Always
+    securityContext:
+      allowPrivilegeEscalation: true
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}

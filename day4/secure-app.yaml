@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    app: python
+  name: secure-app
+spec:
+  containers:
+  - image: marcinkujawski/secure-app:1.0
+    name: python-app
+    resources: {}
+    imagePullPolicy: Always
+    securityContext:
+      allowPrivilegeEscalation: true
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}

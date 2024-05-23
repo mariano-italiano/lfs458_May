@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: web-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/server-snippet: |
+      location ~ / {
+         proxy_pass https://192.168.1.100:30080;
+         proxy_set_header Host $host;
+         proxy_set_header X-Forwarded-Proto https;
+      }
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: dashboard.192.168.1.100.nip.io   # "192.168.1.100.nip.io" - to jest FQDN dla klastra k8s 
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: kubernetes-dashboard
+            port:
+              number: 80
+

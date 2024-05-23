@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    app: python
+  name: mk-pod
+spec:
+  containers:
+  - image: marcinkujawski/lfs459-demo:2.0
+    name: mk-pod
+    imagePullPolicy: Always
+    resources: {}
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}
